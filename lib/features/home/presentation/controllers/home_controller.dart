@@ -1,3 +1,4 @@
+import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:interactive_chart/interactive_chart.dart';
@@ -8,7 +9,8 @@ class HomeController extends ChangeNotifier {
   final ChangeNotifierProviderRef ref;
   HomeController(this.ref);
   List<KlineData> list = [];
-  List<CandleData> data = [];
+
+  List<Candle> candles = [];
   bool isLoading = false;
   Future<void> fetchChartData({
     required String symbol,
@@ -16,22 +18,23 @@ class HomeController extends ChangeNotifier {
     required int limit,
   }) async {
     list.clear();
-    data.clear();
+    candles.clear();
     isLoading = true;
     notifyListeners();
     list = await ref
         .watch(marketRepositoryProvider)
         .getKlineData(symbol: symbol, interval: interval, limit: limit);
-    Future.forEach(list, (element) {
-      data.add(CandleData(
-        timestamp: element.closeTime - element.openTime,
-        open: element.open,
-        high: element.high,
-        low: element.low,
-        close: element.close,
-        volume: double.parse(element.volume),
-      ));
+
+    await Future.forEach(list, (element) {
+      candles.add(Candle(
+          date: DateTime(element.closeTime - element.openTime),
+          high: element.high,
+          low: element.low,
+          open: element.open,
+          close: element.close,
+          volume: double.parse(element.volume)));
     });
+
     isLoading = false;
     notifyListeners();
   }

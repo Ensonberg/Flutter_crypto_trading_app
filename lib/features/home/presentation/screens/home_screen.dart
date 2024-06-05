@@ -6,6 +6,7 @@ import 'package:ravenpay_assessment/core/extensions/ui_extension.dart';
 import 'package:ravenpay_assessment/features/home/presentation/states/interval_notifier.dart';
 import 'package:ravenpay_assessment/features/home/presentation/states/stream_controller.dart';
 import 'package:ravenpay_assessment/features/home/presentation/widgets/charts_widget.dart';
+import 'package:ravenpay_assessment/features/home/presentation/widgets/menu_widget.dart';
 import 'package:ravenpay_assessment/features/home/presentation/widgets/order_book_widget.dart';
 import 'package:ravenpay_assessment/res.dart';
 
@@ -20,6 +21,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   void changeIndex(int index) {
     _selectedIndex = index;
     setState(() {});
@@ -45,6 +47,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: MenuDialog(),
+
       // appBar: AppBar(
       //   elevation: 0,
       //   backgroundColor: Colors.transparent,
@@ -80,7 +85,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             width: 32.w,
                             child: Image.asset(Res.profile)),
                         SvgPicture.asset(Res.globe),
-                        SvgPicture.asset(Res.menu),
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context, builder: (_) => MenuDialog());
+                          },
+                          icon: SvgPicture.asset(Res.menu),
+                        )
                       ],
                     ),
                   )
@@ -374,9 +385,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   const ChartsWidget(),
                   const OrderBookWidget(),
-                  Container(
-                    color: Colors.red,
-                  )
                 ],
               ),
             ),

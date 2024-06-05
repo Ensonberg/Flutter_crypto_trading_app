@@ -9,6 +9,7 @@ class Res {
   static const String down = "assets/svgs/down.svg";
   static const String expand = "assets/svgs/expand.svg";
   static const String globe = "assets/svgs/globe.svg";
+  static const String info = "assets/svgs/info.svg";
   static const String logo = "assets/pngs/logo.png";
   static const String Logomark = "assets/pngs/Logomark.png";
   static const String menu = "assets/svgs/menu.svg";

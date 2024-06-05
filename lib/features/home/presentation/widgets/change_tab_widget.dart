@@ -6,10 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class ChangeTabWidget extends ConsumerStatefulWidget {
   final String title;
   final bool isCurrent;
+  final double width;
   final VoidCallback onTap;
   const ChangeTabWidget(
       {super.key,
       required this.title,
+      this.width = 102,
       required this.isCurrent,
       required this.onTap});
 
@@ -24,7 +26,7 @@ class _ChangeTabWidgetState extends ConsumerState<ChangeTabWidget> {
       onTap: widget.onTap,
       child: Container(
         height: 34.h,
-        width: 102.w,
+        width: widget.width.w,
         decoration: BoxDecoration(
             color: widget.isCurrent ? const Color(0xff262932) : null,
             borderRadius: BorderRadius.circular(8.r)),

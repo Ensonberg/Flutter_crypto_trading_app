@@ -10,6 +10,8 @@ import 'package:ravenpay_assessment/features/home/presentation/states/order_book
 import 'package:ravenpay_assessment/res.dart';
 import 'package:web_socket_channel/io.dart';
 
+import 'order_widget.dart';
+
 class OrderBookWidget extends ConsumerStatefulWidget {
   const OrderBookWidget({super.key});
 
@@ -71,85 +73,121 @@ class _OrderBookWidgetState extends ConsumerState<OrderBookWidget> {
               ],
             ),
             SizedBox(
+              height: 16.h,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Price\n(USDT)",
+                  style: TextStyle(
+                      color: Color(0xffA7B1BC),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp),
+                ),
+                Text(
+                  "Amounts\n(BTC)",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Color(0xffA7B1BC),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp),
+                ),
+                Text(
+                  "Total",
+                  style: TextStyle(
+                      color: Color(0xffA7B1BC),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12.sp),
+                ),
+              ],
+            ),
+            SizedBox(
               height: 20.h,
             ),
             orderBookEvent.when(
               data: (event) => Column(
                 children: [
                   SizedBox(
-                    height: 250.h,
+                    height: 150.h,
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: event.asks.length,
+                        itemCount: 5,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (ctx, index) {
                           Order order = event.asks.elementAt(index);
-
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            minVerticalPadding: 0,
-                            horizontalTitleGap: 0,
-                            trailing: Text(
-                              (order.price * order.quantity).toStringAsFixed(2),
-                              style: TextStyle(
-                                  color: context.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.sp),
-                            ),
-                            title: Center(
-                              child: Text(
-                                order.quantity.toStringAsFixed(2),
-                                style: TextStyle(
-                                    color: context.colorScheme.onSurface,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.sp),
-                              ),
-                            ),
-                            leading: Text(
-                              order.price.toStringAsFixed(2),
-                              style: TextStyle(
-                                  color: const Color(0xffFF6838),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.sp),
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  order.price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                      color: const Color(0xffFF6838),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                ),
+                                Text(
+                                  order.quantity.toString(),
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                ),
+                                Text(
+                                  (order.price * order.quantity)
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
                             ),
                           );
                         }),
                   ),
                   SizedBox(
-                    height: 250.h,
+                    height: 150.h,
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
-                        itemCount: event.bids.length,
+                        itemCount: 5,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (ctx, index) {
                           Order order = event.bids.elementAt(index);
-
-                          return ListTile(
-                            contentPadding: EdgeInsets.zero,
-                            dense: true,
-                            minVerticalPadding: 0,
-                            horizontalTitleGap: 0,
-                            trailing: Text(
-                              (order.price * order.quantity).toStringAsFixed(2),
-                              style: TextStyle(
-                                  color: context.colorScheme.onSurface,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.sp),
-                            ),
-                            title: Center(
-                              child: Text(
-                                order.quantity.toStringAsFixed(2),
-                                style: TextStyle(
-                                    color: context.colorScheme.onSurface,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12.sp),
-                              ),
-                            ),
-                            leading: Text(
-                              order.price.toStringAsFixed(2),
-                              style: TextStyle(
-                                  color: const Color(0xff25C26E),
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12.sp),
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  order.price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                      color: context.colorScheme.primary,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                ),
+                                Text(
+                                  order.quantity.toString(),
+                                  textAlign: TextAlign.justify,
+                                  style: TextStyle(
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                ),
+                                Text(
+                                  (order.price * order.quantity)
+                                      .toStringAsFixed(2),
+                                  style: TextStyle(
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 12.sp),
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
                             ),
                           );
                         }),
@@ -159,70 +197,10 @@ class _OrderBookWidgetState extends ConsumerState<OrderBookWidget> {
               loading: () => const CircularProgressIndicator(),
               error: (error, stack) => Text('Error: $error'),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class WebsocketDemo extends StatefulWidget {
-  const WebsocketDemo({Key? key}) : super(key: key);
-
-  @override
-  State<WebsocketDemo> createState() => _WebsocketDemoState();
-}
-
-class _WebsocketDemoState extends State<WebsocketDemo> {
-  String btcUsdtPrice = "0";
-  final channel = IOWebSocketChannel.connect(
-      'wss://fstream.binance.com/ws/btcusdt@depth@100ms');
-
-  @override
-  void initState() {
-    super.initState();
-    streamListener();
-  }
-
-  streamListener() {
-    channel.stream.listen((message) {
-      // channel.sink.add('received!');
-      // channel.sink.close(status.goingAway);
-      Map<String, dynamic> getData = jsonDecode(message);
-      OrderBookEvent event = OrderBookEvent.fromJson(getData);
-      print(event.asks);
-      setState(() {
-        // btcUsdtPrice = getData['p'];
-      });
-      // print(getData['p']);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "BTC/USDT Price",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 30),
+            SizedBox(
+              height: 20.h,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                btcUsdtPrice,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 250, 194, 25),
-                    fontSize: 30),
-              ),
-            ),
+            const OrdersWidget()
           ],
         ),
       ),

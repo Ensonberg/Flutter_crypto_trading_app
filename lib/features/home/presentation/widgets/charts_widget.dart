@@ -1,3 +1,4 @@
+import 'package:candlesticks/candlesticks.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,10 @@ import 'package:ravenpay_assessment/core/extensions/ui_extension.dart';
 import 'package:ravenpay_assessment/features/home/presentation/controllers/home_controller.dart';
 import 'package:ravenpay_assessment/features/home/presentation/states/chart_data_stream_controller.dart';
 import 'package:ravenpay_assessment/features/home/presentation/states/interval_notifier.dart';
+import 'package:ravenpay_assessment/features/home/presentation/widgets/order_widget.dart';
 import 'package:ravenpay_assessment/res.dart';
+
+import 'change_tab_widget.dart';
 
 class ChartsWidget extends ConsumerStatefulWidget {
   const ChartsWidget({super.key});
@@ -283,66 +287,32 @@ class _ChartsWidgetState extends ConsumerState<ChartsWidget> {
             decoration: const BoxDecoration(color: Color(0xff32383F)),
           ),
           if (ref.watch(homeProvider).isLoading)
-            Column(
+            const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(child: CupertinoActivityIndicator()),
               ],
             ),
-          if (ref.watch(homeProvider).data.isNotEmpty)
+          if (ref.watch(homeProvider).candles.isNotEmpty)
             SizedBox(
-              height: context.screenSize.height * 0.5,
-              child: InteractiveChart(
-                /** Only [candles] is required */
-                candles: ref.watch(homeProvider).data,
-
-                style: ChartStyle(
-                  //priceGainColor: Colors.teal[200]!,
-                  // priceLossColor: Colors.blueGrey,
-                  // volumeColor: Colors.teal.withOpacity(0.8),
-                  trendLineStyles: [
-                    Paint()
-                      ..strokeWidth = 16.0
-                      ..strokeCap = StrokeCap.round
-                      ..color = Colors.deepOrange,
-                    Paint()
-                      ..strokeWidth = 16.0
-                      ..strokeCap = StrokeCap.round
-                      ..color = Colors.orange,
-                  ],
-                  priceGridLineColor: Color(0xffA7B1BC)!,
-                  priceLabelStyle: TextStyle(
-                      color: Color(0xffA7B1BC),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 8),
-                  timeLabelStyle:
-                      TextStyle(color: context.colorScheme.onSurface),
-                  selectionHighlightColor: Colors.red.withOpacity(0.2),
-                  overlayBackgroundColor: Color(0xff00C076),
-                  overlayTextStyle:
-                      TextStyle(color: context.colorScheme.onSurface),
-                  timeLabelHeight: 32.h,
-                  volumeColor: Colors.green.withOpacity(0.5),
-
-                  volumeHeightFactor: 0.2, // volume area is 20% of total height
-                ),
-                /** Customize axis labels */
-                // timeLabel: (timestamp, visibleDataCount) => "📅",
-                // priceLabel: (price) => "${price.round()} 💎",
-                /** Customize overlay (tap and hold to see it)
-       ** Or return an empty object to disable overlay info. */
-                // overlayInfo: (candle) => {
-                //   "💎": "🤚    ",
-                //   "Hi": "${candle.high?.toStringAsFixed(2)}",
-                //   "Lo": "${candle.low?.toStringAsFixed(2)}",
-                // },
-                /** Callbacks */
-                onTap: (candle) => print("user tapped on $candle"),
-                onCandleResize: (width) => print("each candle is $width wide"),
+              height: context.screenSize.height * 0.4,
+              child: Candlesticks(
+                candles: ref.watch(homeProvider).candles,
+                onLoadMoreCandles: () async {},
+                // actions: [ToolBarAction(child: child, onPressed: onPressed)],
               ),
             ),
+          // Container(
+          //   height: 10.h,
+          //   width: context.screenSize.width,
+          //   decoration: BoxDecoration(color: context.colorScheme.primary),
+          // ),
           SizedBox(
             height: 20.h,
+          ),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: OrdersWidget(),
           )
         ],
       ),
